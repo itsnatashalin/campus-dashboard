@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智慧校园大数据系统 · 课堂互动版</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./src/style.css">
+
+    <!-- 引入 ECharts 和插件 (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-wordcloud@2.1.0/dist/echarts-wordcloud.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+
+<body>
+    <div id="save-status" class="save-status">
+        <span>💾</span> <span id="save-text">已自动保存</span>
+    </div>
+
+    <div id="app">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>智慧校园系统</h1>
+                <p>Big Data Campus 1.0</p>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-btn active" data-target="sec1">
+                    <span class="step">01</span> 数据来源
+                </button>
+                <button class="nav-btn" data-target="sec2">
+                    <span class="step">02</span> 数据类型
+                </button>
+                <button class="nav-btn" data-target="sec3">
+                    <span class="step">03</span> 5V 特征
+                </button>
+                <button class="nav-btn" data-target="sec4">
+                    <span class="step">04</span> 采集方式
+                </button>
+                <button class="nav-btn" data-target="sec5">
+                    <span class="step">05</span> 存储方式
+                </button>
+                <button class="nav-btn" data-target="sec6">
+                    <span class="step">06</span> 校园应用
+                </button>
+                <button class="nav-btn" data-target="sec7">
+                    <span class="step">07</span> 数据流图
+                </button>
+                <button class="nav-btn special-btn" data-target="sec8">
+                    <span class="step">08</span> 成果大屏
+                </button>
+
+                <div style="margin-top: auto; padding-top: 20px;">
+                    <button id="btn-demo" class="nav-btn"
+                        style="background: rgba(0, 242, 255, 0.1); border: 1px dashed rgba(0, 242, 255, 0.3);">
+                        <span class="step">🧪</span> 一键演示
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main">
+            <header class="main-header">
+                <h2>智慧校园系统 · 搭建实验室</h2>
+                <p>欢迎来到数据科学实验室。今天，我们将一起从零开始，设计并搭建一个属于我们自己的“智慧校园大数据系统”。</p>
+            </header>
+
+            <!-- 1. 数据来源 -->
+            <section id="sec1" class="card">
+                <h3>
+                    <span class="num">01</span> 寻找数据源
+                    <span class="badge">Data Sources</span>
+                </h3>
+                <p class="desc">
+                    想一想，在我们的校园里，哪些设备或场景正在产生数据？（例如：当你走进校门、在食堂吃饭、或者在图书馆借书时...）
+                </p>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <span class="small-label">数据源 1</span>
+                        <input data-save id="ds1" type="text" placeholder="输入一个数据源，例如：校门人脸识别闸机" />
+                    </div>
+                    <div class="input-group">
+                        <span class="small-label">数据源 2</span>
+                        <input data-save id="ds2" type="text" placeholder="例如：食堂消费刷卡机" />
+                    </div>
+                    <div class="input-group">
+                        <span class="small-label">数据源 3</span>
+                        <input data-save id="ds3" type="text" placeholder="例如：图书馆借阅系统" />
+                    </div>
+                    <div class="input-group">
+                        <span class="small-label">数据源 4</span>
+                        <input data-save id="ds4" type="text" placeholder="例如：宿舍智能电表" />
+                    </div>
+                </div>
+                <div class="field-row">
+                    <label>思考一下，这些数据都是什么样子的？（混合了图片、文字还是数字？）</label>
+                </div>
+                <textarea data-save id="dsTypes" placeholder="在这里记录你的观察：例如门禁系统既有照片（非结构化）也有进出时间记录（结构化）..."></textarea>
+            </section>
+
+            <!-- 2. 数据类型 -->
+            <section id="sec2" class="card">
+                <h3>
+                    <span class="num">02</span> 数据分类挑战
+                    <span class="badge">Data Types</span>
+                </h3>
+                <p class="desc">
+                    作为数据架构师，你需要将刚才发现的数据进行分类。哪些是整齐的表格？哪些是杂乱的视频或文本？
+                </p>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <span class="small-label">结构化数据 (Structured)</span>
+                        <textarea data-save id="typeStructured" placeholder="列举那些可以用 Excel 表格存下来的数据..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="small-label">半结构化数据 (Semi-Structured)</span>
+                        <textarea data-save id="typeSemi" placeholder="列举那些像日志、JSON 格式的数据..."></textarea>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <span class="small-label">非结构化数据 (Unstructured)</span>
+                    <textarea data-save id="typeUnstructured" placeholder="列举那些图片、视频、音频文档等无法直接存入表格的数据..."></textarea>
+                </div>
+            </section>
+
+            <!-- 3. 5V -->
+            <section id="sec3" class="card">
+                <h3>
+                    <span class="num">03</span> 大数据 5V 特征分析
+                    <span class="badge">5V Analysis</span>
+                </h3>
+                <p class="desc">
+                    分析一下我们校园里的数据，它们符合大数据的 5V 特征吗？请为每一个特征找到对应的证据。
+                </p>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <span class="small-label">Volume (大量) - 哪里数据量最大？</span>
+                        <textarea data-save id="vVolume" placeholder="例如：全校几十个摄像头每天 24 小时不间断录像..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="small-label">Velocity (高速) - 哪里数据产生最快？</span>
+                        <textarea data-save id="vVelocity" placeholder="例如：早高峰时段校门的刷卡数据流..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="small-label">Variety (多样) - 数据种类多吗？</span>
+                        <textarea data-save id="vVariety" placeholder="例如：我们既有视频，又有消费记录，还有网页日志..."></textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="small-label">Value (价值) - 哪些数据最值钱？</span>
+                        <textarea data-save id="vValue" placeholder="例如：学生的消费习惯数据可以帮助优化食堂菜品..."></textarea>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <span class="small-label">Veracity (真实) - 哪些数据绝对不能出错？</span>
+                    <textarea data-save id="vVeracity" placeholder="例如：期末考试成绩、学籍档案信息..."></textarea>
+                </div>
+            </section>
+
+            <!-- 4. 采集方式 -->
+            <section id="sec4" class="card">
+                <h3>
+                    <span class="num">04</span> 数据采集方案
+                    <span class="badge">Collection</span>
+                </h3>
+                <p class="desc">
+                    我们要如何把这些数据“抓”进系统里？请为不同的数据源选择合适的采集方式。
+                </p>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <span class="small-label">日志采集 (Log)</span>
+                        <textarea data-save id="cLog" placeholder="哪些数据是通过系统自动生成的日志记录的？"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="small-label">传感器 / IoT 采集</span>
+                        <textarea data-save id="cIoT" placeholder="哪些数据是通过硬件设备感知的？"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="small-label">数据库同步 (DB)</span>
+                        <textarea data-save id="cDB" placeholder="哪些数据直接来自现有的业务系统数据库？"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="small-label">网络爬虫 / API</span>
+                        <textarea data-save id="cAPI" placeholder="我们需要从校外获取数据吗（如天气、交通）？"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. 存储方式 -->
+            <section id="sec5" class="card">
+                <h3>
+                    <span class="num">05</span> 数据存储架构
+                    <span class="badge">Storage</span>
+                </h3>
+                <p class="desc">
+                    数据采集来了，放在哪里最合适？请根据数据特点分配存储仓库。
+                </p>
+                <div class="grid-2">
+                    <div class="input-group">
+                        <span class="small-label">分布式文件系统 (HDFS)</span>
+                        <textarea data-save id="sDFS" placeholder="海量的视频和历史归档数据应该存哪里？"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="small-label">NoSQL 数据库</span>
+                        <textarea data-save id="sNoSQL" placeholder="高速产生的实时数据适合存哪里？"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="small-label">云存储 (Cloud)</span>
+                        <textarea data-save id="sCloud" placeholder="需要备份或共享的文档存哪里？"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="small-label">关系型数据库 (RDBMS)</span>
+                        <textarea data-save id="sRDB" placeholder="最重要的结构化核心数据（如成绩）存哪里？"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. 校园应用 -->
+            <section id="sec6" class="card">
+                <h3>
+                    <span class="num">06</span> 创新应用设计
+                    <span class="badge">Application</span>
+                </h3>
+                <p class="desc">
+                    发挥你的想象力！利用我们收集到的数据，设计一个能让校园生活更美好的智能应用。
+                </p>
+                <div class="field-row">
+                    <label>给你的应用起个名字：</label>
+                </div>
+                <input data-save id="appName" type="text" placeholder="例如：宿舍用电安全智能预警系统" />
+                <div class="field-row" style="margin-top: 8px;">
+                    <label>这个应用是为了解决什么问题？</label>
+                </div>
+                <textarea data-save id="appGoal" placeholder="例如：防止火灾隐患，节约能源..."></textarea>
+                <div class="field-row" style="margin-top: 8px;">
+                    <label>它需要用到哪些具体数据？</label>
+                </div>
+                <textarea data-save id="appData" placeholder="例如：实时电流数据、宿舍人员进出记录、历史用电习惯..."></textarea>
+            </section>
+
+            <!-- 7. 数据流图 -->
+            <section id="sec7" class="card">
+                <h3>
+                    <span class="num">07</span> 数据流转全景
+                    <span class="badge">Data Flow</span>
+                </h3>
+                <p class="desc">
+                    最后，请描述一下数据在你的应用中是如何流动的？从采集开始，经过处理，最后如何展示？
+                </p>
+                <textarea data-save id="flow" placeholder="描述路径：智能电表 -> MQTT网关 -> InfluxDB -> 算法分析 -> 报警推送"></textarea>
+            </section>
+
+            <!-- 8. 成果大屏 -->
+            <section id="sec8" class="card dashboard-card">
+                <div class="dashboard-header">
+                    <h3>
+                        <span class="num">08</span> 你的智慧校园系统蓝图
+                        <span class="badge highlight">Dashboard</span>
+                    </h3>
+
+                    <!-- Class Name Input -->
+                    <div class="class-input-group" style="margin-left: 20px; flex: 1;">
+                        <input id="className" type="text" placeholder="输入班级/姓名 (例如: 高一(3)班 张三)"
+                            style="background: rgba(0,0,0,0.3); border: 1px solid rgba(0,242,255,0.3); color: #00f2ff; width: 200px; padding: 8px; border-radius: 4px;"
+                            data-save />
+                    </div>
+
+                    <div class="actions">
+                        <button id="btn-refresh" class="btn btn-secondary">
+                            🔄 实时预览
+                        </button>
+                        <button id="btn-export" class="btn btn-primary">
+                            📸 生成蓝图 (保存图片)
+                        </button>
+                    </div>
+                </div>
+
+                <div id="dashboard-content" class="dashboard-content">
+                    <!-- Title for Export -->
+                    <div class="export-title" style="display:none; text-align: center; margin-bottom: 20px;">
+                        <h1 style="color: #fff; margin: 0; font-size: 28px;">智慧校园大数据系统蓝图</h1>
+                        <p style="color: #00f2ff; margin: 5px 0 0; font-family: monospace;" id="out-className">Smart
+                            Campus Big Data System Blueprint</p>
+                    </div>
+
+                    <!-- New Layout: 
+                 Row 1: Network (Left) | Radar + Pie (Right)
+                 Row 2: Tech Card (Center)
+                 Row 3: Flow (Bottom) 
+            -->
+                    <div class="dashboard-grid-v2">
+
+                        <!-- Left Column: Network Graph -->
+                        <div class="chart-box v2-network">
+                            <h4>� 校园数据源网络 <span class="source-tag">01 数据来源</span></h4>
+                            <div id="chart-network" class="chart-container-large"></div>
+                        </div>
+
+                        <!-- Right Column: Radar & Pie -->
+                        <div class="v2-right-col">
+                            <div class="chart-box v2-radar">
+                                <h4>📊 5V 特征雷达 <span class="source-tag">03 5V分析</span></h4>
+                                <div id="chart-5v" class="chart-container-small"></div>
+                            </div>
+                            <div class="chart-box v2-pie">
+                                <h4>🧩 数据类型分布 <span class="source-tag">02 数据类型</span></h4>
+                                <div id="chart-types" class="chart-container-small"></div>
+                            </div>
+                        </div>
+
+                        <!-- Middle Row: Tech Card -->
+                        <div class="chart-box v2-tech-card">
+                            <div class="tech-card-header">
+                                <div class="tech-icon">📡</div>
+                                <div class="tech-title">
+                                    <h2 id="out-appName">智慧校园大脑</h2>
+                                    <p>Smart Campus Brain v1.0</p>
+                                </div>
+                                <div class="tech-status">
+                                    <span class="status-dot"></span> 运行中
+                                </div>
+                            </div>
+
+                            <div class="tech-card-body">
+                                <div class="tech-section">
+                                    <h5>🎯 设计目标 (Goal)</h5>
+                                    <p id="out-appGoal">通过大数据分析实现校园智能化管理...</p>
+                                </div>
+                                <div class="tech-section">
+                                    <h5>🔄 核心数据流 (Pipeline)</h5>
+                                    <div class="pipeline-visual" id="out-flow">
+                                        <!-- JS will populate this -->
+                                        采集 -> 传输 -> 存储 -> 分析 -> 应用
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tech-card-footer">
+                                <div class="stat-item">
+                                    <span class="label">输入数据</span>
+                                    <span class="value" id="out-appData">...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Row: Flow Diagram -->
+                        <div class="chart-box v2-flow">
+                            <h4>🚀 系统数据流向 <span class="source-tag">04-07 全流程</span></h4>
+                            <div id="chart-flow" class="chart-container-wide"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="dashboard-footer">
+                        <p>Generated by Smart Campus System Builder</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="./src/main.js"></script>
+</body>
+
+</html>
